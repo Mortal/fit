@@ -1,0 +1,7 @@
+Fit x,y data to the model y = a * x**2 + x**b + c
+
+The model is represented twice in the code:
+In generate_data, which generates data with random error,
+and in fit_b, which given a value b constructs the linear equations
+    [x**2  1] * (a, c) = y - x**b
+which are solved using least squares.
