@@ -36,7 +36,18 @@ def generate_data(x, a, b, c):
     introducing an error by sampling a normal distribution.
     """
     return (a*np.power(x, 2) + np.power(x, b) + c
-            + np.random.normal(size=x.size))
+            + np.random.normal(size=x.size, scale=1000))
+
+with Timer("Generated data"):
+    ## Parameters used to generate data
+    a_real = 0.4
+    b_min = 0.4
+    b_max = 0.8
+    b_real = b_min + (b_max - b_min) * random.random()
+    c_real = 1024
+
+    x = np.array(range(1000, 450000, 2000))
+    y = generate_data(x, a_real, b_real, c_real)
 
 def fit_b(x, y, b):
     """
@@ -73,19 +84,12 @@ def fit(x, y):
 
     return a, b, c
 
-with Timer("Generated data"):
-    x = np.array(range(1000, 450000, 2000))
-    a_real = 0.4
-    b_min = 0.4
-    b_max = 0.8
-    b_real = b_min + (b_max - b_min) * random.random()
-    c_real = 1024
-    y = generate_data(x, a_real, b_real, c_real)
-
 with Timer("Optimizing for b and fitting"):
     a, b, c = fit(x, y)
 
 print("")
+
+## Print values for a, b, c along with the absolute error
 
 print("Solution:")
 for k, v, r in (('a', a, a_real), ('b', b, b_real), ('c', c, c_real)):
